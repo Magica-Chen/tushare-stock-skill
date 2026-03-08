@@ -3,9 +3,9 @@ name: tushare-stock
 description: Tushare A 股股票数据与个股分析技能。用于股票列表、日线/周线/月线/复权/分钟行情、daily_basic 指标、财务报表、十大股东、质押/回购/解禁、资金流、两融、龙虎榜、THS/DC/KPL 板块题材、技术因子，以及估值/财务质量/成长/趋势/交易观察分析。
 ---
 
-# Tushare Stock
+# Tushare Stock Skill
 
-通用的 Tushare A 股股票数据与分析技能。
+A reusable Tushare skill for A-share stock data access and analysis.
 
 ## 何时使用
 
