@@ -1,7 +1,7 @@
 ---
 name: tushare-stock
 description: Tushare skill for China A-share stock data access, analysis, and trading observation.
-version: 1.1.1
+version: 1.0.2
 homepage: https://github.com/Magica-Chen/tushare-stock-skill
 metadata:
   openclaw:
