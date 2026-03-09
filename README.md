@@ -6,7 +6,7 @@ A professional Tushare skill for China A-share data retrieval, stock analysis, a
 
 This repository packages a production-ready Tushare skill focused on China A-share equities. It supports natural-language routing to stock data endpoints, explicit endpoint fetches, stock-level analysis, and trading-observation workflows.
 
-It is designed for users who want one skill that can both pull data and turn that data into practical stock insights.
+It is designed for users who want a single skill that can both retrieve structured market data and turn that data into practical stock insights.
 
 ## Key Capabilities
 
@@ -15,6 +15,13 @@ It is designed for users who want one skill that can both pull data and turn tha
 - valuation, financial-quality, growth, trend, and risk analysis
 - trading-observation workflows covering price action, money flow, leaderboard activity, and technical indicators
 - built-in handling for point thresholds and extra-permission requirements
+
+## Why This Skill
+
+- purpose-built for the Tushare stock-data surface rather than broad, unfocused financial tooling
+- designed to be auditable: explicit credential model, clear network boundary, and limited runtime surface
+- useful for both research-style requests and faster trading-observation workflows
+- extensible technical-indicator registry for future customization
 
 ## Coverage Highlights
 
@@ -62,7 +69,7 @@ python scripts/tushare_stock.py fetch --endpoint daily_basic --param ts_code=600
 Run a stock analysis request:
 
 ```bash
-python scripts/tushare_stock.py analyze --text "分析贵州茅台的估值、财务质量和趋势"
+python scripts/tushare_stock.py analyze --text "Analyze Kweichow Moutai valuation, financial quality, and trend"
 ```
 
 List built-in indicators:
@@ -96,3 +103,9 @@ python scripts/tushare_stock.py indicators
 ## Positioning
 
 This package is intended to be suitable for skill registries such as ClawHub: explicit about credentials, clear about network access, and focused on a narrow, auditable capability surface.
+
+## Recommended Listing Summary
+
+If you need a short marketplace summary, use:
+
+> Professional Tushare skill for China A-share data retrieval, stock analysis, and trading observation with explicit credential and network boundaries.

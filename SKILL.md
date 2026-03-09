@@ -1,7 +1,7 @@
 ---
 name: tushare-stock
 description: Tushare skill for China A-share stock data access, analysis, and trading observation.
-version: 1.1.0
+version: 1.1.1
 homepage: https://github.com/Magica-Chen/tushare-stock-skill
 metadata:
   openclaw:
@@ -26,19 +26,19 @@ A professional Tushare skill for China A-share data retrieval, stock analysis, a
 
 Use this skill for Tushare-powered China A-share workflows, including:
 
-- 股票基础资料和上市清单
-- 日线、周线、月线、复权、实时、分钟行情
-- 每日指标和估值类指标
-- 财务报表、业绩预告、分红、审计、财务指标
-- 十大股东、质押、回购、解禁、大宗交易、股东人数
-- 券商盈利预测、筹码分布、技术因子、CCASS、AH 比价
-- 融资融券、转融通
-- 资金流向
-- 龙虎榜、涨跌停、THS/DC/TDX/KPL 题材和板块数据
-- 个股估值、财务质量、成长性、趋势、股东动作、风险提示等综合分析
-- 偏交易观察的请求，例如量价、资金面、龙虎榜、均线、动量、RSI、KDJ、布林线、MACD
+- stock master data and listings
+- daily, weekly, monthly, adjusted, realtime, and minute-market data
+- daily basic metrics and valuation indicators
+- financial statements, forecasts, dividends, audits, and financial indicators
+- major shareholder, pledge, repurchase, unlock, block trade, and holder-count datasets
+- broker forecasts, chip-distribution data, technical-factor data, CCASS, and AH comparison data
+- margin trading and securities lending datasets
+- money-flow datasets
+- leaderboard, limit-up/down, THS, DC, TDX, and KPL theme and sector datasets
+- stock-level valuation, financial-quality, growth, trend, shareholder-activity, and risk analysis
+- trading-observation requests such as price/volume structure, money flow, leaderboard behavior, moving averages, momentum, RSI, KDJ, Bollinger Bands, and MACD
 
-不要用于 ETF、指数、基金、期货、期权、宏观、新闻类请求。
+Do not use this skill for ETF, index, fund, futures, options, macro, or news workflows.
 
 ## What It Provides
 
@@ -50,62 +50,61 @@ Use this skill for Tushare-powered China A-share workflows, including:
 
 ## Main Entry Point
 
-使用已安装依赖的 Python 3 环境运行自然语言入口：
+Run the natural-language entry point with a Python 3 environment that has the required dependencies installed:
 
 ```bash
-python scripts/tushare_stock.py run --text "<用户请求>"
+python scripts/tushare_stock.py run --text "<request>"
 ```
 
-脚本会：
+The script will:
 
-- 从环境变量读取 `TUSHARE_TOKEN`
-- 如果未直接设置 `TUSHARE_TOKEN`，则仅在显式提供 `TUSHARE_STOCK_ENV_FILE` 时才会从该文件读取 `TUSHARE_TOKEN`
-- 所有 Tushare 请求都应优先调用本脚本，不要临时手写 `import tushare as ts` + `ts.pro_api()` 的独立片段
-- 在可能时把股票名称解析为 `ts_code`
-- 从自然语言中选择最合适的股票接口
-- 规范化日期区间、季度表达、分钟频率等常见参数
-- 对积分不足或需要额外权限的接口做显式拦截
-- 对“分析/估值/基本面/趋势/风险”等分析型请求自动切到综合分析
-- 对“交易观察/技术分析/均线/动量/RSI/KDJ/布林线/MACD”等请求自动切到交易观察
-- 交易观察默认走快档，只看趋势、量价、资金流和技术指标，不逐日扫描龙虎榜
-- 只有明确提到“龙虎榜 / 机构席位 / 游资 / 深度交易观察”时，才切到深档并补扫龙虎榜
-- 返回结构化 JSON；查询类默认原始数据优先，分析类返回结论与关键支撑数据
-- 技能不再调用 `ts.set_token(...)`，避免额外写入本地 token 缓存文件
+- read `TUSHARE_TOKEN` from the environment
+- read `TUSHARE_TOKEN` from a file only when `TUSHARE_STOCK_ENV_FILE` is explicitly provided
+- act as the preferred entry point for Tushare access instead of ad hoc `import tushare as ts` snippets
+- resolve stock names to `ts_code` where possible
+- choose the best-fit Tushare stock endpoint from natural-language requests
+- normalize common parameters such as date windows, quarter references, and minute frequencies
+- explicitly gate endpoints that require more points or extra permissions
+- switch to integrated analysis for requests about analysis, valuation, fundamentals, trend, or risk
+- switch to trading observation for requests about trading setup, technical analysis, moving averages, momentum, RSI, KDJ, Bollinger Bands, or MACD
+- use a fast trading-observation mode by default and only perform deeper leaderboard scans when explicitly requested
+- return structured JSON with raw data first for query workflows and concise conclusions plus supporting data for analysis workflows
+- avoid calling `ts.set_token(...)` so it does not intentionally create a local token cache file
 
 ## Security And Runtime Boundaries
 
-- 运行 `run` / `fetch` / `analyze` 时会访问 Tushare API。
-- 运行 `build_catalog.py` 时会抓取 Tushare 官方文档页面 `tushare.pro` 以刷新本地接口目录。
-- 技能默认不再扫描用户家目录下的配置文件；如需使用文件型凭证，必须显式设置 `TUSHARE_STOCK_ENV_FILE`。
-- 技能只会读取其声明的环境变量，不会主动读取其他无关凭证。
+- `run`, `fetch`, and `analyze` access Tushare network APIs.
+- `build_catalog.py` fetches official Tushare documentation pages from `tushare.pro` to refresh the local endpoint catalog.
+- The skill does not implicitly scan home-directory configuration files; file-based credentials must be provided explicitly through `TUSHARE_STOCK_ENV_FILE`.
+- The skill reads only the declared environment variables and does not intentionally access unrelated credentials.
 
 ## Additional Commands
 
-列出支持的接口目录：
+List the supported endpoint catalog:
 
 ```bash
 python scripts/tushare_stock.py catalog
 ```
 
-直接调用指定接口：
+Call a specific endpoint directly:
 
 ```bash
 python scripts/tushare_stock.py fetch --endpoint daily_basic --param ts_code=600519.SH --param start_date=20250101 --param end_date=20250301
 ```
 
-显式触发个股综合分析：
+Run explicit stock analysis:
 
 ```bash
-python scripts/tushare_stock.py analyze --text "分析贵州茅台的估值、财务质量和趋势"
+python scripts/tushare_stock.py analyze --text "Analyze Kweichow Moutai valuation, financial quality, and trend"
 ```
 
-查看当前内置技术指标目录：
+List the built-in technical indicators:
 
 ```bash
 python scripts/tushare_stock.py indicators
 ```
 
-根据官方文档刷新接口目录：
+Refresh the endpoint catalog from the official documentation:
 
 ```bash
 python scripts/build_catalog.py
@@ -113,35 +112,35 @@ python scripts/build_catalog.py
 
 ## Output Behavior
 
-- 面向用户的说明一律使用简体中文。
-- 查询类默认先给原始数据，再给必要的简短解释。
-- 分析类默认给出简短结论、关键指标、风险提示和支撑数据摘要。
-- 交易观察类优先输出趋势、量价、资金流、龙虎榜和技术指标信号。
-- 快档交易观察优先保证速度；深档交易观察才补龙虎榜与机构席位扫描。
-- 明确说明实际使用的接口和积分/权限限制。
-- 请求不明确时，先用中文追问一句，不要盲猜。
+- User-facing outputs are intended to be in Simplified Chinese.
+- Query workflows return raw data first, followed by minimal explanation when useful.
+- Analysis workflows return concise conclusions, key metrics, risk notes, and supporting data summaries.
+- Trading-observation workflows prioritize trend, price/volume structure, money flow, leaderboard signals, and technical indicators.
+- Fast mode prioritizes speed; deep mode adds leaderboard and institutional-seat scans when explicitly requested.
+- Responses should clearly state the endpoints actually used and any point or permission constraints.
+- When the request is ambiguous, ask a short clarification question in Chinese instead of guessing.
 
 ## Example Requests
 
-- `贵州茅台近一年每日指标`
-- `最近30天龙虎榜机构交易`
-- `分析宁德时代的估值和成长性`
-- `看看招商银行基本面和趋势`
-- `贵州茅台有什么风险提示`
-- `看看贵州茅台交易观察`
-- `看看贵州茅台快档交易观察`
-- `深度看看贵州茅台交易观察，带龙虎榜和机构席位`
-- `分析宁德时代均线、RSI 和布林线`
-- `贵州茅台技术分析`
+- `Kweichow Moutai daily_basic metrics for the past year`
+- `Institutional leaderboard activity in the last 30 days`
+- `Analyze CATL valuation and growth`
+- `Review China Merchants Bank fundamentals and trend`
+- `What are the current risk signals for Kweichow Moutai?`
+- `Show a trading observation view for Kweichow Moutai`
+- `Show a fast trading observation view for Kweichow Moutai`
+- `Run a deep trading observation on Kweichow Moutai with leaderboard and institutional-seat data`
+- `Analyze CATL moving averages, RSI, and Bollinger Bands`
+- `Technical analysis for Kweichow Moutai`
 
 ## References
 
-- 机器可读目录：`references/stock_endpoints.json`
-- 人类可读摘要：`references/stock_endpoints.md`
-- 技术指标注册表：`scripts/trading_analysis.py`
-- 官方索引：<https://tushare.pro/document/2?doc_id=14>
+- Machine-readable catalog: `references/stock_endpoints.json`
+- Human-readable summary: `references/stock_endpoints.md`
+- Technical-indicator registry: `scripts/trading_analysis.py`
+- Official index: <https://tushare.pro/document/2?doc_id=14>
 
 ## Extension Model
 
-- 想新增技术指标时，优先编辑 `scripts/trading_analysis.py`
-- 新增一个计算函数并用 `@register_indicator(...)` 注册后，主技能和 `indicators` 命令会自动识别
+- To add new technical indicators, extend `scripts/trading_analysis.py`.
+- Register each new indicator with `@register_indicator(...)` so the main skill and `indicators` command pick it up automatically.
