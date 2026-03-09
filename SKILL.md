@@ -20,11 +20,11 @@ metadata:
 
 # Tushare Stock Skill
 
-A reusable Tushare skill for A-share stock data access and analysis.
+A professional Tushare skill for China A-share data retrieval, stock analysis, and trading observation.
 
-## 何时使用
+## Use This Skill When
 
-当用户请求 Tushare 股票数据区的接口时使用，包括：
+Use this skill for Tushare-powered China A-share workflows, including:
 
 - 股票基础资料和上市清单
 - 日线、周线、月线、复权、实时、分钟行情
@@ -40,7 +40,15 @@ A reusable Tushare skill for A-share stock data access and analysis.
 
 不要用于 ETF、指数、基金、期货、期权、宏观、新闻类请求。
 
-## 主命令
+## What It Provides
+
+- natural-language routing across a broad Tushare A-share stock endpoint set
+- explicit endpoint access for deterministic data pulls
+- stock-level analysis covering valuation, financial quality, growth, trend, and risk
+- trading-observation workflows covering price/volume structure, money flow, leaderboard activity, and technical indicators
+- built-in handling for point thresholds and extra-permission gates
+
+## Main Entry Point
 
 使用已安装依赖的 Python 3 环境运行自然语言入口：
 
@@ -64,14 +72,14 @@ python scripts/tushare_stock.py run --text "<用户请求>"
 - 返回结构化 JSON；查询类默认原始数据优先，分析类返回结论与关键支撑数据
 - 技能不再调用 `ts.set_token(...)`，避免额外写入本地 token 缓存文件
 
-## 安全与运行边界
+## Security And Runtime Boundaries
 
 - 运行 `run` / `fetch` / `analyze` 时会访问 Tushare API。
 - 运行 `build_catalog.py` 时会抓取 Tushare 官方文档页面 `tushare.pro` 以刷新本地接口目录。
 - 技能默认不再扫描用户家目录下的配置文件；如需使用文件型凭证，必须显式设置 `TUSHARE_STOCK_ENV_FILE`。
 - 技能只会读取其声明的环境变量，不会主动读取其他无关凭证。
 
-## 其他命令
+## Additional Commands
 
 列出支持的接口目录：
 
@@ -103,7 +111,7 @@ python scripts/tushare_stock.py indicators
 python scripts/build_catalog.py
 ```
 
-## 输出要求
+## Output Behavior
 
 - 面向用户的说明一律使用简体中文。
 - 查询类默认先给原始数据，再给必要的简短解释。
@@ -113,7 +121,7 @@ python scripts/build_catalog.py
 - 明确说明实际使用的接口和积分/权限限制。
 - 请求不明确时，先用中文追问一句，不要盲猜。
 
-## 典型表达
+## Example Requests
 
 - `贵州茅台近一年每日指标`
 - `最近30天龙虎榜机构交易`
@@ -126,14 +134,14 @@ python scripts/build_catalog.py
 - `分析宁德时代均线、RSI 和布林线`
 - `贵州茅台技术分析`
 
-## 参考
+## References
 
 - 机器可读目录：`references/stock_endpoints.json`
 - 人类可读摘要：`references/stock_endpoints.md`
 - 技术指标注册表：`scripts/trading_analysis.py`
 - 官方索引：<https://tushare.pro/document/2?doc_id=14>
 
-## 扩展方式
+## Extension Model
 
 - 想新增技术指标时，优先编辑 `scripts/trading_analysis.py`
 - 新增一个计算函数并用 `@register_indicator(...)` 注册后，主技能和 `indicators` 命令会自动识别
