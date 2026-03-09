@@ -1,7 +1,7 @@
 ---
 name: tushare-stock
-description: Tushare skill for China A-share stock data access, analysis, and trading observation.
-version: 1.0.2
+description: Specialized Tushare skill for China A-share stock data, stock analysis, and trading observation.
+version: 1.0.3
 homepage: https://github.com/Magica-Chen/tushare-stock-skill
 metadata:
   openclaw:
@@ -30,7 +30,7 @@ metadata:
 
 # Tushare Stock Skill
 
-A professional Tushare skill for China A-share data retrieval, stock analysis, and trading observation.
+A specialized Tushare skill for China A-share stock data retrieval, stock analysis, and trading observation.
 
 ## Use This Skill When
 
@@ -57,6 +57,10 @@ Do not use this skill for ETF, index, fund, futures, options, macro, or news wor
 - stock-level analysis covering valuation, financial quality, growth, trend, and risk
 - trading-observation workflows covering price/volume structure, money flow, leaderboard activity, and technical indicators
 - built-in handling for point thresholds and extra-permission gates
+
+## Marketplace Positioning
+
+This package is intentionally narrower and deeper than general-purpose Tushare wrappers. It focuses on China A-share stock workflows only, with stronger stock-analysis and trading-observation behavior instead of trying to cover every asset class or macro dataset in one package.
 
 ## Main Entry Point
 

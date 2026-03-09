@@ -1,12 +1,16 @@
 # Tushare Stock Skill
 
-A professional Tushare skill for China A-share data retrieval, stock analysis, and trading observation.
+A specialized Tushare skill for China A-share stock data retrieval, stock analysis, and trading observation.
 
 ## Overview
 
 This repository packages a production-ready Tushare skill focused on China A-share equities. It supports natural-language routing to stock data endpoints, explicit endpoint fetches, stock-level analysis, and trading-observation workflows.
 
 It is designed for users who want a single skill that can both retrieve structured market data and turn that data into practical stock insights.
+
+## Listing Introduction
+
+Tushare Stock Skill is a focused China A-share specialist. Instead of covering every market and macro surface that Tushare exposes, it concentrates on the workflows most useful for individual-stock research and trading observation: stock data retrieval, valuation and financial analysis, money-flow reading, leaderboard interpretation, and technical signal generation.
 
 ## Key Capabilities
 
@@ -22,6 +26,14 @@ It is designed for users who want a single skill that can both retrieve structur
 - designed to be auditable: explicit credential model, clear network boundary, and limited runtime surface
 - useful for both research-style requests and faster trading-observation workflows
 - extensible technical-indicator registry for future customization
+
+## Comparison With Other ClawHub Tushare Skills
+
+Based on the public ClawHub listing summaries as of March 9, 2026:
+
+- Compared with `lidayan/tushare-data`, which presents itself as a broad Tushare data wrapper for stocks, funds, futures, crypto, and fundamentals, this skill is more specialized. It is designed specifically for China A-share stock workflows and goes further on stock analysis and trading observation.
+- Compared with `StanleyChanH/tushare-finance`, which highlights broad market coverage across A-shares, Hong Kong stocks, U.S. stocks, funds, futures, bonds, and macro indicators, this skill is narrower by design. It trades breadth for depth in A-share stock research and signal-oriented workflows.
+- If you want one package for many asset classes and macro queries, those broader packages may fit better. If you want a sharper China A-share stock specialist with built-in valuation, risk, money-flow, leaderboard, and technical-analysis behavior, this package is the stronger fit.
 
 ## Coverage Highlights
 
@@ -120,4 +132,4 @@ This package is intended to be suitable for skill registries such as ClawHub: ex
 
 If you need a short marketplace summary, use:
 
-> Professional Tushare skill for China A-share data retrieval, stock analysis, and trading observation with explicit credential and network boundaries.
+> Specialized Tushare skill for China A-share stock data, valuation and risk analysis, money-flow reading, leaderboard interpretation, and trading observation with explicit credential and network boundaries.
