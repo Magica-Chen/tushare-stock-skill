@@ -39,6 +39,18 @@ It is designed for users who want a single skill that can both retrieve structur
 - A valid `TUSHARE_TOKEN`
 - Python packages listed in [`requirements.txt`](requirements.txt)
 
+## Environment Variables
+
+Required:
+
+- `TUSHARE_TOKEN`: required for all Tushare API access
+
+Optional:
+
+- `TUSHARE_STOCK_ENV_FILE`: optional path to an env file containing `TUSHARE_TOKEN`
+- `TUSHARE_POINTS`: optional override for access-gating logic; defaults to `5120`
+- `TUSHARE_STOCK_CACHE_DIR`: optional cache directory; defaults to `/tmp/tushare_stock_skill`
+
 ## Quick Start
 
 Install dependencies:

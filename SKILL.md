@@ -10,11 +10,21 @@ metadata:
     requires:
       env:
         - TUSHARE_TOKEN
+      bins:
+        - python3
+    optional:
+      env:
         - TUSHARE_STOCK_ENV_FILE
         - TUSHARE_POINTS
         - TUSHARE_STOCK_CACHE_DIR
-      bins:
-        - python3
+      pythonPackages:
+        - pandas
+        - tushare
+        - requests
+        - beautifulsoup4
+      network:
+        - api.waditu.com
+        - tushare.pro
     primaryEnv: TUSHARE_TOKEN
 ---
 
@@ -70,6 +80,24 @@ The script will:
 - use a fast trading-observation mode by default and only perform deeper leaderboard scans when explicitly requested
 - return structured JSON with raw data first for query workflows and concise conclusions plus supporting data for analysis workflows
 - avoid calling `ts.set_token(...)` so it does not intentionally create a local token cache file
+
+## Installation
+
+Install Python dependencies before using the skill:
+
+```bash
+pip install -r requirements.txt
+```
+
+Required environment variable:
+
+- `TUSHARE_TOKEN`: required for all data and analysis commands
+
+Optional environment variables:
+
+- `TUSHARE_STOCK_ENV_FILE`: optional path to an env file that contains `TUSHARE_TOKEN`
+- `TUSHARE_POINTS`: optional override for your current Tushare points balance; defaults to `5120`
+- `TUSHARE_STOCK_CACHE_DIR`: optional cache directory; defaults to `/tmp/tushare_stock_skill`
 
 ## Security And Runtime Boundaries
 
