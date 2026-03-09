@@ -31,7 +31,8 @@ Provide your token through one of these methods:
 
 - export `TUSHARE_TOKEN` in the environment
 - set `TUSHARE_STOCK_ENV_FILE` to an external env file containing `TUSHARE_TOKEN=...`
-- place the token in `~/.config/tushare-stock/skill.env`
+
+The skill does not implicitly scan home-directory config files for credentials. If you prefer file-based credentials, point `TUSHARE_STOCK_ENV_FILE` to a file you control.
 
 Run a natural-language request:
 
@@ -65,3 +66,10 @@ python scripts/tushare_stock.py analyze --text "分析贵州茅台的估值、�
 - User-facing outputs are designed to be in Simplified Chinese.
 - The skill avoids calling `ts.set_token(...)` so it does not intentionally write a token cache file.
 - The published repository excludes local cache files and local runtime-specific configuration.
+
+## Security Notes
+
+- Required environment variables and runtime expectations are declared in the `SKILL.md` frontmatter metadata.
+- `run`, `fetch`, and `analyze` call Tushare network endpoints through the official client library.
+- `build_catalog.py` fetches Tushare documentation pages from `tushare.pro` to rebuild the local endpoint catalog.
+- The skill reads only the declared token-related environment variables and an explicitly provided env file path if `TUSHARE_STOCK_ENV_FILE` is set.

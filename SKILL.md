@@ -1,6 +1,21 @@
 ---
 name: tushare-stock
-description: Tushare A 股股票数据与个股分析技能。用于股票列表、日线/周线/月线/复权/分钟行情、daily_basic 指标、财务报表、十大股东、质押/回购/解禁、资金流、两融、龙虎榜、THS/DC/KPL 板块题材、技术因子，以及估值/财务质量/成长/趋势/交易观察分析。
+description: Tushare skill for China A-share stock data access, analysis, and trading observation.
+version: 1.1.0
+homepage: https://github.com/Magica-Chen/tushare-stock-skill
+metadata:
+  openclaw:
+    emoji: "📈"
+    homepage: https://github.com/Magica-Chen/tushare-stock-skill
+    requires:
+      env:
+        - TUSHARE_TOKEN
+        - TUSHARE_STOCK_ENV_FILE
+        - TUSHARE_POINTS
+        - TUSHARE_STOCK_CACHE_DIR
+      bins:
+        - python3
+    primaryEnv: TUSHARE_TOKEN
 ---
 
 # Tushare Stock Skill
@@ -36,8 +51,7 @@ python scripts/tushare_stock.py run --text "<用户请求>"
 脚本会：
 
 - 从环境变量读取 `TUSHARE_TOKEN`
-- 如果设置了 `TUSHARE_STOCK_ENV_FILE`，会从该文件读取 `TUSHARE_TOKEN`
-- 如果未设置 `TUSHARE_STOCK_ENV_FILE`，会依次尝试 `~/.config/tushare-stock/skill.env` 与 `~/.config/tushare-stock/.env`
+- 如果未直接设置 `TUSHARE_TOKEN`，则仅在显式提供 `TUSHARE_STOCK_ENV_FILE` 时才会从该文件读取 `TUSHARE_TOKEN`
 - 所有 Tushare 请求都应优先调用本脚本，不要临时手写 `import tushare as ts` + `ts.pro_api()` 的独立片段
 - 在可能时把股票名称解析为 `ts_code`
 - 从自然语言中选择最合适的股票接口
@@ -49,6 +63,13 @@ python scripts/tushare_stock.py run --text "<用户请求>"
 - 只有明确提到“龙虎榜 / 机构席位 / 游资 / 深度交易观察”时，才切到深档并补扫龙虎榜
 - 返回结构化 JSON；查询类默认原始数据优先，分析类返回结论与关键支撑数据
 - 技能不再调用 `ts.set_token(...)`，避免额外写入本地 token 缓存文件
+
+## 安全与运行边界
+
+- 运行 `run` / `fetch` / `analyze` 时会访问 Tushare API。
+- 运行 `build_catalog.py` 时会抓取 Tushare 官方文档页面 `tushare.pro` 以刷新本地接口目录。
+- 技能默认不再扫描用户家目录下的配置文件；如需使用文件型凭证，必须显式设置 `TUSHARE_STOCK_ENV_FILE`。
+- 技能只会读取其声明的环境变量，不会主动读取其他无关凭证。
 
 ## 其他命令
 

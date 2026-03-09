@@ -22,10 +22,6 @@ warnings.filterwarnings("ignore", category=FutureWarning, module=r"tushare(\.|$)
 DEFAULT_USER_POINTS = int(os.environ.get("TUSHARE_POINTS", "5120"))
 CACHE_DIR = Path(os.environ.get("TUSHARE_STOCK_CACHE_DIR", "/tmp/tushare_stock_skill"))
 CATALOG_PATH = Path(__file__).resolve().parents[1] / "references" / "stock_endpoints.json"
-DEFAULT_ENV_PATHS = [
-    Path.home() / ".config" / "tushare-stock" / "skill.env",
-    Path.home() / ".config" / "tushare-stock" / ".env",
-]
 
 STOCK_ENDPOINT_ALIASES = {
     "stock_basic": ["股票列表", "股票清单", "上市股票", "a股列表", "证券列表"],
@@ -300,16 +296,12 @@ def parse_dotenv_value(path: Path, key: str) -> str | None:
 
 
 def load_token() -> str | None:
-    token = os.environ.get("TUSHARE_TOKEN") or os.environ.get("TS_TOKEN")
+    token = os.environ.get("TUSHARE_TOKEN")
     if token:
         return token
     env_file = os.environ.get("TUSHARE_STOCK_ENV_FILE")
     if env_file:
         return parse_dotenv_value(Path(env_file).expanduser(), "TUSHARE_TOKEN")
-    for path in DEFAULT_ENV_PATHS:
-        token = parse_dotenv_value(path, "TUSHARE_TOKEN")
-        if token:
-            return token
     return None
 
 
@@ -326,7 +318,7 @@ def load_catalog() -> list[dict]:
 def init_pro():
     token = load_token()
     if not token:
-        fail("未找到 TUSHARE_TOKEN。请在环境变量中配置，或通过 TUSHARE_STOCK_ENV_FILE 指向外部 env 文件。")
+        fail("未找到 TUSHARE_TOKEN。请设置环境变量 TUSHARE_TOKEN，或显式设置 TUSHARE_STOCK_ENV_FILE 指向包含该变量的 env 文件。")
     return ts.pro_api(token)
 
 
